@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+  web/probar.html · Página "Probar clasificación" (versión 1)
+  Qué hace:  deja escribir los datos de un incendio inventado y muestra cómo lo clasifican las
+             reglas (real o falsa alarma, nivel, razones y recursos recomendados).
+  Qué usa:   css/estilos.css, js/comun.js (menú y carga de datos) y js/probar.js (las reglas).
+  Cómo se prueba: abrir el sitio publicado, elegir un ejemplo y cambiarle datos.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Probar clasificación · Vigía Jalisco</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <a class="marca" href="index.html">
+      <span class="marca-nombre">Vigía Jalisco</span>
+      <span class="marca-lema">Clasificación de incendios y plan de ataque</span>
+    </a>
+    <!-- El menú lo llena js/comun.js -->
+    <nav class="menu" id="menu" aria-label="Páginas del sitio"></nav>
+  </header>
+
+  <main class="contenido contenido-texto">
+
+    <h1>Probar clasificación</h1>
+
+    <section class="ayuda">
+      <h2>Cómo usar esta página</h2>
+      <p>
+        Escribe los datos de un incendio inventado y haz clic en <strong>Clasificar</strong>. La
+        página aplica las mismas reglas que se usaron para clasificar los incendios del mapa y
+        explica el resultado. Para empezar rápido, elige uno de los ejemplos y cámbiale datos.
+      </p>
+    </section>
+
+    <!-- Botones que llenan el formulario con un incendio de ejemplo -->
+    <section class="controles" id="ejemplos" aria-label="Ejemplos">
+      <span class="leyenda-titulo">Ejemplos:</span>
+      <button type="button" value="bosque">Incendio grande en bosque</button>
+      <button type="button" value="agricola">Quema agrícola</button>
+      <button type="button" value="industria">Fuente industrial</button>
+      <button type="button" value="pueblo">Pequeño, junto a un pueblo</button>
+    </section>
+
+    <form id="formulario" class="tarjeta">
+      <h2>Datos del incendio</h2>
+      <div class="formulario">
+        <label>Puntos de calor
+          <input type="number" id="n_puntos" min="1" step="1" value="1" required>
+          <small>Cuántos puntos detectó el satélite</small>
+        </label>
+        <label>Pasadas de satélite
+          <input type="number" id="n_pasadas" min="1" step="1" value="1" required>
+          <small>En cuántas pasadas distintas se vio</small>
+        </label>
+        <label>Duración (horas)
+          <input type="number" id="duracion_horas" min="0" step="0.5" value="0" required>
+          <small>De la primera a la última detección</small>
+        </label>
+        <label>Intensidad máxima (MW)
+          <input type="number" id="frp_max" min="0" step="0.1" value="5" required>
+          <small>Potencia de su punto más fuerte</small>
+        </label>
+        <label>Distancia a la localidad más cercana (km)
+          <input type="number" id="dist_localidad_km" min="0" step="0.1" value="3" required>
+          <small>Localidades de 100 habitantes o más</small>
+        </label>
+      </div>
+      <div class="casillas">
+        <label><input type="checkbox" id="es_forestal"> El terreno es forestal (bosque, selva, matorral)</label>
+        <label><input type="checkbox" id="fuente_fija"> El lugar tiene puntos de calor casi todo el año (fuente fija)</label>
+        <label><input type="checkbox" id="en_area_protegida"> Está dentro de un área natural protegida</label>
+      </div>
+      <button type="submit" class="boton-principal">Clasificar</button>
+    </form>
+
+    <!-- Aquí js/probar.js escribe el resultado o avisa si algo falló -->
+    <section id="resultado" aria-live="polite">Cargando las reglas…</section>
+
+    <p class="nota">
+      Estas reglas se ajustaron con los incendios de 2024. No incluyen todavía el clima (viento y
+      humedad). El resultado es una recomendación: no sustituye el criterio del personal en campo.
+    </p>
+
+  </main>
+
+  <footer class="pie">
+    Proyecto académico del equipo Brigada Binaria. <strong>No sustituye a los sistemas oficiales</strong>
+    de CONAFOR, SEMADET ni Protección Civil y no emite alertas. Ante un incendio, llama al 911.
+  </footer>
+
+  <script src="js/comun.js"></script>
+  <script src="js/probar.js"></script>
+</body>
+</html>

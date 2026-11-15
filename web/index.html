@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--
+  web/index.html · Página "Mapa de incendios" (versión 3)
+  Qué hace:  muestra el menú, el recuadro de ayuda, los controles (año, día y niveles) y el mapa
+             de Jalisco con los incendios clasificados del día elegido.
+  Qué usa:   css/estilos.css, Leaflet 1.9.4 (se baja de internet), js/comun.js (menú y carga
+             de datos) y js/mapa.js (el mapa y los controles).
+  Cómo se prueba: abrir el sitio publicado. Con doble clic en el archivo se ve el mapa, pero
+             no los incendios: el navegador no deja leer archivos de datos desde el disco.
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <!-- Para que en el celular la página use el ancho de la pantalla -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapa de incendios · Vigía Jalisco</title>
+
+  <!-- Estilos de Leaflet (la librería del mapa) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <!-- Estilos propios del sitio -->
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <!-- Encabezado con el nombre del sitio y el menú (igual en todas las páginas) -->
+  <header class="encabezado">
+    <a class="marca" href="index.html">
+      <span class="marca-nombre">Vigía Jalisco</span>
+      <span class="marca-lema">Clasificación de incendios y plan de ataque</span>
+    </a>
+    <!-- El menú lo llena js/comun.js -->
+    <nav class="menu" id="menu" aria-label="Páginas del sitio"></nav>
+  </header>
+
+  <main class="contenido">
+
+    <h1>Mapa de incendios</h1>
+
+    <!-- Recuadro de ayuda: cada página del sitio tiene uno -->
+    <section class="ayuda">
+      <h2>Cómo usar esta página</h2>
+      <p>
+        Elige un <strong>año</strong> y un <strong>día</strong>: el mapa muestra los incendios que
+        estaban activos ese día. El color indica el nivel de severidad; los grises son probables
+        falsas alarmas. <strong>Haz clic en un círculo</strong> para ver por qué se clasificó así
+        y si coincide con un incendio registrado por CONAFOR.
+      </p>
+      <p>
+        Con las casillas de <strong>niveles</strong> puedes ocultar lo que no te interese. El
+        rectángulo punteado marca la <strong>región piloto</strong> (Bosque La Primavera y Área
+        Metropolitana de Guadalajara), donde la herramienta propondrá el plan de ataque.
+      </p>
+    </section>
+
+    <!-- Controles: año, día y botones para moverse entre días -->
+    <section class="controles" aria-label="Elegir año y día">
+      <label>Año
+        <select id="anio">
+          <option value="2025">2025</option>
+          <option value="2024">2024</option>
+        </select>
+      </label>
+      <label>Día
+        <input type="date" id="fecha">
+      </label>
+      <button type="button" id="dia-anterior">◀ Día anterior</button>
+      <button type="button" id="dia-siguiente">Día siguiente ▶</button>
+      <button type="button" id="dia-mas-activo">Día con más incendios</button>
+    </section>
+
+    <!-- Niveles: sirven de leyenda de colores y de filtro. js/mapa.js lee qué casillas están marcadas -->
+    <section class="leyenda" id="filtros" aria-label="Niveles que se muestran">
+      <span class="leyenda-titulo">Niveles:</span>
+      <label class="leyenda-item"><input type="checkbox" value="bajo" checked><span class="punto nivel-bajo"></span>Bajo</label>
+      <label class="leyenda-item"><input type="checkbox" value="medio" checked><span class="punto nivel-medio"></span>Medio</label>
+      <label class="leyenda-item"><input type="checkbox" value="alto" checked><span class="punto nivel-alto"></span>Alto</label>
+      <label class="leyenda-item"><input type="checkbox" value="critico" checked><span class="punto nivel-critico"></span>Crítico</label>
+      <label class="leyenda-item"><input type="checkbox" value="falsa" checked><span class="punto nivel-falsa"></span>Probable falsa alarma</label>
+    </section>
+
+    <!-- Aquí js/mapa.js escribe cuántos incendios se muestran o avisa si algo falló -->
+    <p id="estado-datos">Cargando incendios…</p>
+
+    <!-- Aquí Leaflet dibuja el mapa -->
+    <div id="mapa" class="mapa" aria-label="Mapa de Jalisco"></div>
+
+    <p class="nota">
+      La clasificación se hace con reglas ajustadas con los datos de 2024. “Real” significa que el
+      satélite vio fuego persistente en terreno forestal; no todos los incendios quedan
+      registrados por CONAFOR, y el satélite no ve todos los que CONAFOR registra.
+    </p>
+
+  </main>
+
+  <footer class="pie">
+    Proyecto académico del equipo Brigada Binaria. <strong>No sustituye a los sistemas oficiales</strong>
+    de CONAFOR, SEMADET ni Protección Civil y no emite alertas. Ante un incendio, llama al 911.
+  </footer>
+
+  <!-- Librería del mapa -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Primero las funciones compartidas y después el código de esta página -->
+  <script src="js/comun.js"></script>
+  <script src="js/mapa.js"></script>
+</body>
+</html>

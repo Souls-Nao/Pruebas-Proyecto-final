@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!--
+  web/plan.html · Página "Plan de ataque" (versión 1)
+  Qué hace:  deja elegir un escenario real de la región piloto, marcar qué brigadas están
+             disponibles y el método de reparto; al generar el plan muestra las rutas en el
+             mapa, la tabla de asignaciones, lo que faltó y las métricas.
+  Qué usa:   css/estilos.css, Leaflet 1.9.4, js/comun.js (menú y carga de datos),
+             js/plan.js (el reparto de brigadas) y js/pagina_plan.js (esta página).
+  Cómo se prueba: abrir el sitio publicado, elegir un escenario y hacer clic en "Generar plan".
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan de ataque · Vigía Jalisco</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <a class="marca" href="index.html">
+      <span class="marca-nombre">Vigía Jalisco</span>
+      <span class="marca-lema">Clasificación de incendios y plan de ataque</span>
+    </a>
+    <!-- El menú lo llena js/comun.js -->
+    <nav class="menu" id="menu" aria-label="Páginas del sitio"></nav>
+  </header>
+
+  <main class="contenido">
+
+    <h1>Plan de ataque</h1>
+
+    <section class="ayuda">
+      <h2>Cómo usar esta página</h2>
+      <p>
+        <strong>1.</strong> Elige un escenario: son días reales de 2024 y 2025 con varios incendios
+        activos a la vez en la región piloto. <strong>2.</strong> Desmarca las brigadas que no
+        estén disponibles. <strong>3.</strong> Elige el método y haz clic en
+        <strong>Generar plan</strong>. El mapa dibuja la ruta de cada brigada y abajo aparece a qué
+        incendio va cada una, en cuántos minutos y qué faltó.
+      </p>
+      <p class="aviso-construccion">
+        Las bases y el número de brigadas son hipotéticos (un supuesto del equipo). La herramienta
+        recomienda: no envía brigadas ni solicita recursos.
+      </p>
+    </section>
+
+    <!-- Controles: escenario, método y botón -->
+    <section class="controles" aria-label="Escenario y método">
+      <label>Escenario
+        <select id="escenario"></select>
+      </label>
+      <label>Método
+        <select id="metodo">
+          <option value="hungaro">Húngaro (propuesta)</option>
+          <option value="voraz">Voraz por nivel</option>
+          <option value="cercana">Más cercana en línea recta</option>
+        </select>
+      </label>
+      <button type="button" id="generar" class="boton-principal">Generar plan</button>
+    </section>
+
+    <!-- Brigadas disponibles: js/pagina_plan.js pone una casilla por brigada, agrupadas por base -->
+    <section class="tarjeta">
+      <h2>Brigadas disponibles</h2>
+      <div id="brigadas" class="brigadas"></div>
+    </section>
+
+    <!-- Aquí js/pagina_plan.js avisa qué pasó o si algo falló -->
+    <p id="estado-plan">Cargando datos…</p>
+
+    <div id="mapa" class="mapa" aria-label="Mapa de la región piloto"></div>
+
+    <section class="leyenda" aria-label="Colores por nivel">
+      <span class="leyenda-titulo">Incendios:</span>
+      <span class="leyenda-item"><span class="punto nivel-bajo"></span>Bajo</span>
+      <span class="leyenda-item"><span class="punto nivel-medio"></span>Medio</span>
+      <span class="leyenda-item"><span class="punto nivel-alto"></span>Alto</span>
+      <span class="leyenda-item"><span class="punto nivel-critico"></span>Crítico</span>
+      <span class="leyenda-item"><span class="punto punto-base"></span>Base de brigadas</span>
+    </section>
+
+    <!-- Resultados del plan: los llena js/pagina_plan.js -->
+    <section id="resultados" hidden>
+      <h2>Métricas del plan</h2>
+      <div id="metricas" class="metricas"></div>
+
+      <h2>Incendios, en orden de atención</h2>
+      <div class="tabla-deslizable">
+        <table class="tabla" id="tabla-incendios"></table>
+      </div>
+
+      <h2>Brigadas asignadas</h2>
+      <div class="tabla-deslizable">
+        <table class="tabla" id="tabla-asignaciones"></table>
+      </div>
+
+      <div id="avisos-plan"></div>
+    </section>
+
+    <p class="nota">
+      Los tiempos son de un vehículo por camino, sin tráfico, hasta el punto de acceso: el cruce
+      de caminos más cercano al incendio. Los recursos por nivel son un supuesto del equipo.
+    </p>
+
+  </main>
+
+  <footer class="pie">
+    Proyecto académico del equipo Brigada Binaria. <strong>No sustituye a los sistemas oficiales</strong>
+    de CONAFOR, SEMADET ni Protección Civil y no emite alertas. Ante un incendio, llama al 911.
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Primero lo compartido, luego el reparto de brigadas y al final el código de esta página -->
+  <script src="js/comun.js"></script>
+  <script src="js/plan.js"></script>
+  <script src="js/pagina_plan.js"></script>
+</body>
+</html>
